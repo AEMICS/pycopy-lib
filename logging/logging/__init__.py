@@ -178,6 +178,8 @@ class FileHandler(StreamHandler):
 
         if not delay:
             self._stream = open(self.filename, self.mode)
+        else:
+            self._stream = None # Else lazy file creation (see below) doesnt work
 
     def emit(self, record):
         if self._stream is None:

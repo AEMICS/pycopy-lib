@@ -213,10 +213,15 @@ class Formatter:
             return "{asctime" in self.fmt
 
     def format(self, record):
-        # The message attribute of the record is computed using msg % args.
-        record.message = record.msg[:self.max_len] % record.args
-        if len(record.msg) > self.max_len:
-            record.message += '...'
+        # The message attribute of the record is computed using msg % args.     
+        if self.style == "%":
+            record.message = record.msg[:self.max_len] % record.args
+            if len(record.msg) > self.max_len:
+                record.message += '...'
+        elif self.style == "{":
+            record.message = record.msg[:self.max_len].format(*record.args)
+            if len(record.msg) > self.max_len:
+                record.message += '...'
 
         # If the formatting string contains '(asctime)', formatTime() is called to
         # format the event time.

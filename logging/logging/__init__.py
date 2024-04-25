@@ -210,8 +210,11 @@ class Formatter:
             return "{asctime" in self.fmt
 
     def format(self, record):
-        # The message attribute of the record is computed using msg % args.
-        record.message = record.msg % record.args
+        # The message attribute of the record is computed using msg % args.      
+        if self.style == "%":
+            record.message = record.msg % record.args
+        elif self.style == "{":
+            record.message = record.msg.format(*record.args)
 
         # If the formatting string contains '(asctime)', formatTime() is called to
         # format the event time.
